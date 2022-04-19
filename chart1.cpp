@@ -9,8 +9,8 @@
 #pragma resource "*.dfm"
 TForm1 *Form1;
 int i=0;
-int t=20;
-double dt=t/2000.0;
+int t=25;
+double dt=t/1000.0;
 int window=10;
 int mini=0,maxi=window;
 double u=0,newu=0;
@@ -42,26 +42,26 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 	  k11 = x1;
 	  k21= w1;
 
-	  l11 = dx1(x,x1,y,w1,u);
+	  l11 = dx1(x,x1,y,w1,u0);
 	  l21 = dy1(x,x1,y,w1);
 
 	  k12= x1+l11*dt/2;
 	  k22= w1+l21*dt/2;
 
-	  l12= dx1(x + k11*dt / 2, x1 + l11*dt / 2,y + k21*dt / 2, w1 + l21*dt / 2,u);
+	  l12= dx1(x + k11*dt / 2, x1 + l11*dt / 2,y + k21*dt / 2, w1 + l21*dt / 2,(u0+u1)/2);
 	  l22= dy1(x + k11*dt / 2, x1 + l11*dt / 2,y + k21*dt / 2, w1 + l21*dt / 2);
 
 
 	  k13= x1+l12*dt/2;
 	  k23= w1+l22*dt/2;
 
-	  l13= dx1(x + k12*dt / 2, x1 + l12*dt / 2,y + k22*dt / 2, w1 + l22*dt / 2,u);
+	  l13= dx1(x + k12*dt / 2, x1 + l12*dt / 2,y + k22*dt / 2, w1 + l22*dt / 2,(u0+u1)/2);
 	  l23= dy1(x + k12*dt / 2, x1 + l12*dt / 2,y + k22*dt / 2, w1 + l22*dt / 2);
 
 	  k14= x1+l13*dt;
 	  k24= w1+l23*dt;
 
-	  l14= dx1(x + k13*dt , x1 + l13*dt ,y + k23*dt , w1 + l23*dt ,u);
+	  l14= dx1(x + k13*dt , x1 + l13*dt ,y + k23*dt , w1 + l23*dt ,u1);
 	  l24= dy1(x + k13*dt , x1 + l13*dt ,y + k23*dt , w1 + l23*dt );
 
 // x value
@@ -71,10 +71,11 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 	 y = y + dt / 6.0 * (k21 + 2 * k22 + 2 * k23 + k24);
 	w1 = w1 + dt / 6.0 * (l21 + 2 * l22 + 2 * l23 + l24);
 
-	Series1->AddXY(i*dt,u);
-   Series2->AddXY(i*dt,y-x);
+	Series1->AddXY(i*dt,u0);
+   //Series2->AddXY(i*dt,y-x);
 	Series3->AddXY(i*dt,y);
 
+	u0=u1;
 
 // Grafikon kitöltése
 //Series1->AddXY(i*dt,sin(i*dt*2*3.1416*0.25));
@@ -94,7 +95,7 @@ Chart1->BottomAxis->Minimum=(floor(i*dt/window)>0)*(i*dt-window);
 //---------------------------------------------------------------------------
 void __fastcall TForm1::ScrollBar1Change(TObject *Sender)
 {
-u=(ScrollBar1->Position-100)/200.0;
+u1=(ScrollBar1->Position-100)/200.0;
 }
 double __fastcall TForm1::dx1(double x, double x1, double y, double w1, double u)
 {

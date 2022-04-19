@@ -2,11 +2,11 @@
 
 #ifndef chart1H
 #define chart1H
-#define kk 2000
-#define m1 10
-#define ks 50
-#define m2 29
-#define cc 400
+#define kk 135000
+#define m1 50
+#define ks 5700
+#define m2 465
+#define cc 1000
 
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
